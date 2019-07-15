@@ -1,0 +1,38 @@
+<html>
+<head></head>
+<body>
+<input id="dec-number" type="number" placeholder="输入一个十进制非负整数">
+<input id="bin-bit" type="number" placeholder="输入转化后二进制数字位数">
+<button id="trans-btn">转化为二进制</button>
+<p id="result">运算结果</p>
+<script>
+var result=document.getElementById("result");
+var trans=document.getElementById("trans-btn");
+var dec=document.getElementById("dec-number");
+var bit=document.getElementById("bin-bit");
+var ary=[];
+trans.onclick=function(){
+   var i=dec.value;
+   if(parseInt(i)==i&&i>0){
+      while(i>0){
+       ary.push(i%2);
+       i=parseInt(i/2);
+      }
+      if(ary.length<bit.value){
+        while(ary.length<bit.value){
+        ary.push(0);
+        }
+      }else{
+        console.log("请输入正确的bit值");
+      }
+       ary=ary.reverse().join("");
+       result.innerHTML=ary;
+       ary=[];
+   }else{
+       console.log("输入不合法");
+   }
+}
+
+</script>
+</body>
+</html>
