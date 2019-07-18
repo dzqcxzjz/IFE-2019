@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>css sprite</title>
+<style>
+.one{width: 480px;height: 480px;margin: 100px;background-image: url("http://ife.baidu.com/2016/static/img/erik_ce204002.jpg");background-repeat:repeat-y;}
+</style>
+</head>
+<body>
+<div class="one"></div>
+<script>
+var one=document.getElementsByClassName("one")[0];
+var i=1;
+var timer=setInterval(function(){
+	one.style.backgroundPositionY=480*i+"px";
+	i++;
+},150)
+</script>
+</body>
+</html>
