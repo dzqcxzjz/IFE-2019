@@ -14,36 +14,36 @@
         var obj = document.querySelector("#fade-obj");
         var btn=document.querySelector("#fade-btn");
         var set;
+        var a=true;
+        var num=100;
         btn.onclick=function(){
-            var o=obj.style.opacity;
-            if(this.innerHTML==="淡出"){
-                set=setInterval(function(){
-                if(o>0){
-                console.log(o);
-                o=(o*1000-10)/1000;
-                obj.style.opacity=o;
-                btn.disabled=true;
-            }else{  
-                    clearInterval(set);
-                    btn.innerHTML="淡入";
-                    btn.disabled=false;
-                }
-                },30)
-                }else{
-                set=setInterval(function(){
-                if(o<1){
-                o=o-0+0.01;
-                console.log(o);
-                obj.style.opacity=o;
-                btn.disabled=true;
-            }else{  
-                    clearInterval(set);
-                    btn.innerHTML="淡出";
-                    btn.disabled=false;
-                }
-                },30)
-                }
+            set=setInterval(function(){
+            	if(a){
+            		    if(num>0){
+                    	num--;
+                    	obj.style.opacity=num/100;
+                    	btn.disabled=true;
+                    }else{
+                    	clearInterval(set);
+                    	btn.disabled=false;
+                    	btn.innerHTML="淡入";
+                    	a=false;
+                    }
+            	}else{
+            		    if(num<100){
+                    	num++;
+                    	obj.style.opacity=num/100;
+                    	btn.disabled=true;
+                    }else{
+                    	clearInterval(set);
+                    	btn.disabled=false;
+                    	btn.innerHTML="淡出";
+                    	a=true;
+                    }            		
+            	}
+            },30)      
             }
+
        </script>
 </body>
 </html>
