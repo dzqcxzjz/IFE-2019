@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="author" content="http://www.softwhy.com/" />
+<title></title>
+</head> 
+<body> 
+<div id ="inp">
+    <label>Number A:<input id="radio-a" type="radio" name="math-obj" value="a"></label><input id="num-a" type="text">
+    <label>Number B:<input id="radio-b" type="radio" name="math-obj" value="b"></label><input id="num-b" type="text">
+</div>
+<div id="btns">
+    <button id="btn0">判断当前选中的输入框输入内容是否为数字</button>
+    <button id="btn1">把 A 四舍五入为 B 个小数位数的数字</button>
+    <button id="btn2">当前选中数字的绝对值</button>
+    <button id="btn3">对当前选中的数字进行上舍入</button>
+    <button id="btn4">对当前选中的数字进行下舍入</button>
+    <button id="btn5">把当前选中的数字四舍五入为最接近的整数</button>
+    <button id="btn6">返回 A 和 B 中的最高值</button>
+    <button id="btn7">返回 A 和 B 中的最低值</button>        
+</div>
+<p id="result"></p>
+<script>
+var inpa=document.querySelector("#num-a");
+var inpb=document.querySelector("#num-b");
+var result=document.querySelector("#result");
+var btn=document.querySelector("#btns");
+var control=true;
+function test(that){
+if(parseFloat(that.value)==that.value&&!isNaN(that.value)){
+    control=true;
+}else{
+    control=false;
+}   
+}
+var testdouble=function(){
+    if(inpa.value==parseFloat(inpa.value)&&!isNaN(inpa.value)){
+        if(inpb.value==parseFloat(inpb.value)&&!isNaN(inpb.value)){
+            control=true;
+        }else{
+            control=false;
+        }
+    }else{
+        control=false;
+    }   
+}
+var  testnum=function(){
+    var that=this;
+    test(that);
+    btn.onclick=function(){
+    if(control){
+    switch(event.target.id){
+        case "btn0":
+        console.log("输入的是数字");
+        break;
+        case "btn1":
+        testdouble();
+        control?result.innerHTML=(inpa.value-0).toFixed(inpb.value):console.log("输入值是非数字");  
+        break;
+        case "btn2":
+        result.innerHTML=that.value<0?-that.value:that.value;
+        break;
+        case "btn3":
+        result.innerHTML=Math.ceil(that.value);
+        break;
+        case "btn4":
+        result.innerHTML=Math.floor(that.value);
+        break;
+        case "btn5":
+        result.innerHTML=Math.round(that.value);
+        break;
+        case "btn6":
+        testdouble();
+        result.innerHTML=control&&(inpa.value-0>inpb.value-0)?inpa.value:inpb.value;
+        break;
+        case "btn7":
+        testdouble();
+        result.innerHTML=control&&(inpa.value-0<inpb.value-0)?inpa.value:inpb.value;
+        break;                        
+    }
+    }else{
+        result.innerHTML="输入值是非数字";
+         console.log("输入值是非数字");        
+    }
+}    
+}
+inpa.onblur=testnum;
+inpb.onblur=testnum;
+</script>
+</body> 
+</html>
+

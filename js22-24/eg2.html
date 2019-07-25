@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="author" content="http://www.softwhy.com/" />
+<title></title>
+</script> 
+</head> 
+<body> 
+<div id="inps">
+    <label>String A:
+        <input id="radio-a" type="radio" checked="true" name="str-obj" value="a">
+    </label>
+    <textarea id="str-a"></textarea>
+    <label>String B:
+        <input id="radio-b" type="radio" name="str-obj" value="b">
+    </label>
+    <textarea id="str-b"></textarea>        
+    <label>Num A：<input id="num-a" type="number" value="0"></label>
+    <label>Num B：<input id="num-b" type="number" value="1"></label>
+</div>
+<div id=btns>
+    <button id='btn0'>获取当前选中输入的内容长度</button>
+    <button id='btn1'>当前选中输入中的第3个字符</button>
+    <button id='btn2'>把两个输入框的文字连接在一起输出（concat）</button>
+    <button id='btn3'>输入B中的内容，在输入A的内容中第一次出现的位置（indexOf）</button>
+    <button id='btn4'>输入A中的内容，在输入B的内容中最后一次出现的位置（lastIndexOf）</button>
+    <button id='btn5'>使用slice获取选中输入框内容的部分内容，参数为num-a及num-b</button>
+    <button id='btn6'>当前选中输入框的行数</button>
+    <button id='btn7'>使用substr获取选中输入框内容的子字符串，参数为num-a及num-b</button>
+    <button id='btn8'>把所选输入框中的内容全部转为大写</button>
+    <button id='btn9'>把所选输入框中的内容全部转为小写</button>
+    <button id='btn10'>把所选输入框中内容的半角空格全部去除</button>
+    <button id='btn11'>把所选输入框中内容的a全部替换成另外一个输入框中的内容</button>
+</div>
+<p id="result"></p>
+<script>
+var stra=document.querySelector("#str-a");
+var strb=document.querySelector("#str-b");
+var numa=document.querySelector("#num-a");
+var numb=document.querySelector("#num-b");
+var btns=document.querySelector('#btns');
+var inps=document.querySelector('#inps');
+var result=document.querySelector("#result");
+var control=true;
+var test=function(){
+	var that=this;
+   btns.onclick=function(){
+   	switch(event.target.id){
+   		case "btn0":
+   		result.innerHTML=that.value.length;
+   		break;
+   		case "btn1":
+   		result.innerHTML=that.value.length>2?that.value.charAt(2):"输入不合法";
+   		break;
+   		case "btn2":
+   		result.innerHTML=stra.value.concat(strb.value);
+   		break;
+   		case "btn3":
+   		result.innerHTML=stra.value.indexOf(strb.value);
+   		break;
+   		case "btn4":
+   		result.innerHTML=strb.value.indexOf(stra.value);
+   		break;
+    case "btn5":
+    result.innerHTML=that.value.slice(numa.value,numb.value);
+    break;
+    case "btn6":
+    result.innerHTML=Math.ceil(get(that.value)/22)+"行";
+    break;
+    case "btn7":
+    result.innerHTML=that.value.substr(numa.value,numb.value);
+    break;
+    case "btn8":
+    result.innerHTML=that.value.toUpperCase();
+    break;  
+    case "btn9":
+    result.innerHTML=that.value.toLowerCase();
+    break;
+    case "btn10":
+    result.innerHTML=that.value.replace(/ /g,"");
+    break;
+    case "btn11":
+    if(that.id=="str-a"){
+        result.innerHTML=that.value.replace(/a/g,strb.value);
+    }else{
+        result.innerHTML=that.value.replace(/a/g,stra.value);        
+    }   
+    break;   		       		   		   		   		
+   	}
+   }
+}
+stra.onblur=test;
+strb.onblur=test;
+numa.onblur=test;
+numb.onblur=test;
+</script>
+</body> 
+</html>

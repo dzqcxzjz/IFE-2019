@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="author" content="http://www.softwhy.com/" />
+<title></title>
+</script> 
+</head> 
+<body>
+<input id="queue-input" type="text">
+<p id="queue-cont">队列内容：apple-&gt;pear</p>
+<div id='btn'>
+<button id="in-btn">入队</button>
+<button id="out-btn">出队</button>
+<button id="font-btn">打印队头元素内容</button>
+<button id="empty-btn">判断队列是否为空</button>
+</div>    
+<script>
+var queue = ["apple", "pear"];
+var i=document.querySelector("#in-btn");    
+var o=document.querySelector("#out-btn");    
+var f=document.querySelector("#font-btn");    
+var e=document.querySelector("#empty-btn");    
+var qi=document.querySelector("#queue-input");    
+var qc=document.querySelector("#queue-cont");   
+var btn=document.querySelector("#btn");   
+
+Array.prototype.indexOf = function(val) { 
+    for (var i = 0; i < this.length; i++) { 
+        if (this[i] == val) return i; 
+            } 
+            return -1; 
+        };
+Array.prototype.remove=function(val){
+    var index=this.indexOf(val);
+    if(index>-1){
+        this.splice(index,1);
+    }
+}
+btn.onclick=function(event){
+    var event=event||window.event;
+    var reg="/"+qi.vale+"/";
+    switch(event.target.id){
+        case "in-btn":
+        qi.value!=""?queue.unshift(qi.value):queue;
+        break;
+        case "out-btn":
+        queue.remove(qi.value);
+        console.log(queue);
+        break;
+        case "font-btn":
+        console.log(queue[queue.length-1]);
+        return;
+        case "empty-btn":
+        queue.length>0?console.log("队列不为空"):console.log("队列为空");
+        return;                          
+    }
+    qc.innerHTML="队列内容："+queue.join("->");
+} 
+
+</script> 
+</script>
+</body> 
+</html>
