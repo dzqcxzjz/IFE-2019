@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">    
+    <title>IFE ECMAScript</title>
+    <style type="text/css">
+    </style>
+</head>
+<body>
+<div id="sec">
+<select id="year-select">
+</select>
+<select id="month-select">
+</select>
+<select id="day-select">
+<option value="1">01</option>
+</select>
+<select id="hour-select">      
+</select>
+<select id="minite-select">
+</select>
+<select id="second-select">
+</select></div>
+
+<p id="result-wrapper">现在距离 2001年1月1日星期X HH:MM:SS 还有 X 天 X 小时 X 分 X 秒</p>  
+<script type="text/javascript">
+var yearSelect=document.querySelector("#year-select");
+var monthSelect=document.querySelector("#month-select");
+var daySelect=document.querySelector("#day-select");
+var hourSelect=document.querySelector("#hour-select");
+var miniteSelect=document.querySelector("#minite-select");
+var secondSelect=document.querySelector("#second-select");
+var rw=document.querySelector("#result-wrapper");
+var sec=document.querySelector("#sec");
+var getTimer=function(){
+    return new Date();
+}
+var addzero=function(time){
+    return time=time<10?"0"+time:time;;
+}
+var numtoup=function(num){
+    switch(num){
+        case 1:
+        num="一";
+        break;
+        case 2:
+        num="二";
+        break;
+        case 3:
+        num="三";
+        break;
+        case 4:
+        num="四";
+        break;
+        case 5:
+        num="五";
+        break;
+        case 6:
+        num="六";
+        break;
+        case 0:
+        num="日";
+        break;                                
+    }
+    return num;
+}
+var positive=function(x){
+    return x=x<0?-x:x;
+}
+var creatNodes=function (idx){
+    var obj=document.createElement("option");
+    obj.value=addzero(idx);
+    obj.innerHTML=addzero(idx);
+    return obj;
+}
+
+var creatTime=function(){
+    var newDate=new Date(yearSelect.value,monthSelect.value-1,daySelect.value,hourSelect.value,miniteSelect.value,secondSelect.value);
+    return newDate;
+}
+for(var i=2000;i<2050;i++){
+    yearSelect.appendChild(creatNodes(i));
+}
+for(var i=1;i<13;i++){
+    monthSelect.appendChild(creatNodes(i));
+}
+for(var i=0;i<24;i++){
+    hourSelect.appendChild(creatNodes(i));
+}
+for(var i=0;i<60;i++){
+    miniteSelect.appendChild(creatNodes(i));
+}
+for(var i=0;i<60;i++){
+    secondSelect.appendChild(creatNodes(i));
+}
+daySelect.onfocus=function(){
+    while(daySelect.length>1){
+    daySelect.removeChild(daySelect[daySelect.length-1]);
+    }
+    var x=31;
+    var mv=monthSelect.value;
+    var yv=yearSelect.value;
+    if(mv==1||mv==3||mv==5||mv==7||mv==8||mv==10||mv==12){
+        x=31;
+    }else if(mv==4||mv==6||mv==9||mv==11){
+        x=30;
+    }else if(mv==2){
+        x=28;
+        if(yv%4==0){
+            x=29;
+        }
+    }
+    for(var i=2;i<=x;i++){
+    daySelect.appendChild(creatNodes(i));        
+    }
+}
+
+var timeMinus=function(){
+    var week=numtoup(creatTime().getDay());
+    var x=(creatTime()-getTimer())/1000;
+    console.log(creatTime());
+    var past=x<0?"过去":"还有";
+    var seconds=parseInt(x%60);
+    var minutes=(x-x%60)/60%60;
+    var hours=(x-x%60-60*minutes)/60/60%24;
+    var days=(x-x%60-60*minutes-3600*hours)/60/60/24;
+    rw.innerHTML="现在距离 "+yearSelect.value+"年"+monthSelect.value+"月"+daySelect.value+"日 星期"+week+" "+hourSelect.value+":"+miniteSelect.value+":"+secondSelect.value+" "+past+ positive(days)+" 天 "+positive(hours)+" 小时 "+positive(minutes)+ "分 "+positive(seconds)+" 秒";    
+}
+timeMinus();
+sec.onclick=function(event){
+    var event=event||window.event;
+    
+    switch(event.target.nodeName){
+        case "SELECT":
+        timeMinus();
+        break;
+    }
+}
+setInterval(timeMinus,1000);
+</script>                                                     
+</body>
+</html>

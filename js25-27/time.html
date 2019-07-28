@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">    
+    <title>IFE ECMAScript</title>
+    <style type="text/css">
+    </style>
+</head>
+<body>
+<p id="time"></p>        
+<p id="time1"></p>        
+<script type="text/javascript">
+function go(){
+    console.log("go");
+}
+function GoStep(n){
+    if(n>=1){
+        go();
+        n--;
+        GoStep(n);
+    }else if(n==undefined){
+        go();
+    }
+
+}
+GoStep(null);
+
+var timer=document.querySelector("#time");
+var timer1=document.querySelector("#time1");
+var getTimer=function(){
+    return new Date();
+}
+var addzero=function(time){
+    return time=time<10?"0"+time:time;;
+}
+var numtoup=function(num){
+    switch(num){
+        case 1:
+        num="一";
+        break;
+        case 2:
+        num="二";
+        break;
+        case 3:
+        num="三";
+        break;
+        case 4:
+        num="四";
+        break;
+        case 5:
+        num="五";
+        break;
+        case 6:
+        num="六";
+        break;
+        case 0:
+        num="日";
+        break;                                
+    }
+    return num;
+}
+var numtoup1=function(num){
+    switch(num){
+        case 1:
+        num="Monday";
+        break;
+        case 2:
+        num="Tuesday";
+        break;
+        case 3:
+        num="Wednesday";
+        break;
+        case 4:
+        num="Thursday";
+        break;
+        case 5:
+        num="Friday";
+        break;
+        case 6:
+        num="Saturday";
+        break;
+        case 0:
+        num="Sunday";
+        break;                                
+    }
+    return num;
+}
+setInterval(function(){
+    var year=getTimer().getFullYear();
+    var month=addzero(getTimer().getMonth()+1);
+    var date=addzero(getTimer().getDate());
+    var hours=addzero(getTimer().getHours());
+    var minutes=addzero(getTimer().getMinutes());
+    var seconds=addzero(getTimer().getSeconds());
+    day=numtoup(getTimer().getDay());
+    timer.innerHTML=year+"年"+month+"月"+date+"日 星期"+day+" "+hours+":"+minutes+":"+seconds;    
+    day=numtoup1(getTimer().getDay());
+    var inner=year+"-"+month+"-"+date+" "+day+" "+hours+":"+minutes+":"+seconds+" ";
+    timer1.innerHTML=hours>=12?inner+"PM":"AM";
+},1000);
+</script>                                                     
+</body>
+</html>
