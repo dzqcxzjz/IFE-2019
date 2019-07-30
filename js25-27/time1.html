@@ -118,7 +118,6 @@ daySelect.onfocus=function(){
 var timeMinus=function(){
     var week=numtoup(creatTime().getDay());
     var x=(creatTime()-getTimer())/1000;
-    console.log(creatTime());
     var past=x<0?"过去":"还有";
     var seconds=parseInt(x%60);
     var minutes=(x-x%60)/60%60;
