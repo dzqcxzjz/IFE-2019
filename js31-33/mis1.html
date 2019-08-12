@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">    
+    <title>IFE ECMAScript</title>
+    <style>
+     table tr td{
+        padding: 10px;
+     }
+    </style>
+</head>
+<body> 
+    <div id="luyou">
+    <div id="region-radio-wrapper"></div>
+    <div id="product-radio-wrapper"></div>
+    </div>
+    <form action="#">
+    <div id="table-wrapper"></div>
+    </form>
+<script>
+var oregion=document.querySelector("#region-radio-wrapper"); 
+var oproduct=document.querySelector("#product-radio-wrapper");
+var oluyou=document.querySelector("#luyou");
+var tw=document.querySelector("#table-wrapper"); 
+var oAll=document.querySelector("#allcheck"); 
+var arr=[];
+var k=0;
+var arr1=[];
+var arr2=[];
+var sourceData = [{
+    product: "手机",
+    region: "华东",
+    sale: [120, 100, 140, 160, 180, 185, 190, 210, 230, 245, 255, 270]
+}, {
+    product: "手机",
+    region: "华北",
+    sale: [80, 70, 90, 110, 130, 145, 150, 160, 170, 185, 190, 200]
+}, {
+    product: "手机",
+    region: "华南",
+    sale: [220, 200, 240, 250, 260, 270, 280, 295, 310, 335, 355, 380]
+}, {
+    product: "笔记本",
+    region: "华东",
+    sale: [50, 60, 80, 110, 30, 20, 70, 30, 420, 30, 20, 20]
+}, {
+    product: "笔记本",
+    region: "华北",
+    sale: [30, 35, 50, 70, 20, 15, 30, 50, 710, 130, 20, 20]
+}, {
+    product: "笔记本",
+    region: "华南",
+    sale: [80, 120, 130, 140, 70, 75, 120, 90, 550, 120, 110, 100]
+}, {
+    product: "智能音箱",
+    region: "华东",
+    sale: [10, 30, 4, 5, 6, 5, 4, 5, 6, 5, 5, 25]
+}, {
+    product: "智能音箱",
+    region: "华北",
+    sale: [15, 50, 15, 15, 12, 11, 11, 12, 12, 14, 12, 40]
+}, {
+    product: "智能音箱",
+    region: "华南",
+    sale: [10, 40, 10, 6, 5, 6, 8, 6, 6, 6, 7, 26]
+}]
+function allSelect(str){
+    for(var i=0;i<str.length;i++){
+         str[i].checked=true;
+     }    
+}
+function createCheckBox(container,object){
+    var lab=document.createElement("label");
+    var inp=document.createElement("input");
+    var text=document.createTextNode("全选");
+    inp.type="checkbox";
+    inp.checkboxType="all";
+    lab.appendChild(inp);
+    lab.appendChild(text);
+    container.appendChild(lab);
+    for(var i=0;i<object.length;i++){
+        var labs=document.createElement("label");
+        var inps=document.createElement("input");
+        inps.checkboxType="nomarl";
+        inps.value=object[i].value;
+        inps.type="checkbox";        
+        var texts=document.createTextNode(object[i].text);
+        labs.appendChild(inps);
+        labs.appendChild(texts);
+        container.appendChild(labs);         
+    }
+    container.onclick=function(event){
+        var event=event||window.event;
+        var flag=0;
+        var aInput=container.getElementsByTagName("input");
+        if(event.target.type=="checkbox"){
+            if(event.target.checkboxType=="all"){
+                    allSelect(aInput);
+            }else{
+                for(var i=0;i<aInput.length;i++){
+                    if(aInput[i].checked==true){
+                        aInput[i].checkboxType!=="all"?flag++:flag;
+                    }
+                }
+                if(flag==0){
+                    return false;
+                }else if(flag==aInput.length-1){
+                    allSelect(aInput);
+                }else if(flag==aInput.length-2){
+                    aInput[0].checked=false;
+                }
+            }
+        }
+    }
+}
+createCheckBox(oregion,[{
+    value: "华北",
+    text: "华北"
+}, {
+    value: "华东",
+    text: "华东"
+}, {
+    value: "华南",
+    text: "华南"
+}]);
+createCheckBox(oproduct,[{
+    value: "手机",
+    text: "手机"
+}, {
+    value: "笔记本",
+    text: "笔记本"
+}, {
+    value: "智能音箱",
+    text: "智能音箱"
+}]);
+
+function makeArr(arr,inps){
+var inps=inps.getElementsByTagName("input");
+for(var i=1;i<inps.length;i++){
+            if(inps[i].checked===true){
+                arr.push(inps[i].value);
+            }
+        }  
+        return arr;  
+}
+function check(obj){
+    var x=0;
+    for(var i=0;i<obj.length;i++){
+        if(obj[i].checked&&obj[i].checkboxType!=="all"){
+            x++;
+        }
+    }
+    return x;
+}
+oregion.onchange=function(event){
+    var event=event||window.event;
+    arr1=[];
+    arr2=[];
+    arr=[];
+        makeArr(arr1,oregion);
+        makeArr(arr2,oproduct);
+    if(arr1.length>0&&arr2.length>0){
+         for(var i=0;i<arr1.length;i++){
+            arr[i]=[];
+            arr[i].push(arr1[i]);
+            for(var j=0;j<arr2.length;j++){
+                arr[i].push(arr2[j]);
+            }
+        }       
+    }          
+        tw.innerHTML="";
+       getData(arr1,arr2);
+        makeTable(arr);        
+    
+
+}
+oproduct.onchange=function(){
+    arr=[];
+    var event=event||window.event;
+    arr1=[];
+    arr2=[];
+        makeArr(arr1,oregion);
+        makeArr(arr2,oproduct);
+    if(arr1.length>0&&arr2.length>0){
+         for(var i=0;i<arr1.length;i++){
+            arr[i]=[];
+            arr[i].push(arr1[i]);
+            for(var j=0;j<arr2.length;j++){
+                arr[i].push(arr2[j]);
+            }
+        }       
+    }    
+        tw.innerHTML="";
+       getData(arr1,arr2);
+        makeTable(arr);        
+}
+  function getData(a,b){
+    var flag;
+    if(a.lengh>0&&b.length>0){
+
+    }
+    arr=[];
+    for(var i=0;i<sourceData.length;i++){
+        flag=false;
+        for(var prop in sourceData[i]){
+            for(var j=0;j<a.length;j++){
+                if(sourceData[i].region==a[j]){
+                    for(var k=0;k<b.length;k++){
+                        if(sourceData[i].product==b[k]){
+                             arr.push(sourceData[i]);
+                             flag=true;
+                        }
+                    }
+                }
+            }
+            if(flag){
+                break;
+            }
+        }
+}
+    console.log(arr);
+}
+
+function makeTable(object){
+    var a=check(oregion.getElementsByTagName("input"));
+    var b=check(oproduct.getElementsByTagName("input"));
+    var tb=document.createElement("table");
+    tb.border="1";
+    tb.cellSpacing="0";
+    tw.appendChild(tb);
+    for(var i=0;i<=object.length;i++){
+        var tr=document.createElement("tr");
+        tb.appendChild(tr);
+        for(var j=0;j<14;j++){
+            if(i==0){
+                var inner;
+                switch(j){
+                    case 0:
+                    inner="商品";
+                    break;
+                    case 1:
+                    inner="地区";
+                    break;
+                    case 2:
+                    inner="1月";
+                    break;
+                    case 3:
+                    inner="2月";
+                    break;
+                    case 4:
+                    inner="3月";
+                    break;
+                    case 5:
+                    inner="4月";
+                    break;  
+                    case 6:
+                    inner="5月";
+                    break;
+                    case 7:
+                    inner="6月";
+                    break;
+                    case 8:
+                    inner="7月";
+                    break;
+                    case 9:
+                    inner="8月";
+                    break;
+                    case 10:
+                    inner="9月";
+                    break;
+                    case 11:
+                    inner="10月";
+                    break;
+                    case 12:
+                    inner="11月";
+                    break;
+                    case 13:
+                    inner="12月";
+                    break;                                                   
+                }
+                var th=document.createElement("th");
+                tr.appendChild(th);
+                th.innerHTML=inner;                
+            }else{
+
+
+            if(b>1&&a==1){
+                if(j==0){
+                 if((i-1)%b==0){
+                        var th=document.createElement("th");
+                        tr.appendChild(th);
+                        th.innerHTML=object[i-1]["region"];                    
+                        th.rowSpan=b;
+                    }                    
+                }else if(j==1){
+                var th=document.createElement("th");
+                tr.appendChild(th);
+                 th.innerHTML=object[i-1]["product"];                 
+                }else{
+                 var td=document.createElement("td");
+                 tr.appendChild(td);
+                 td.innerHTML=object[i-1]["sale"][j-2];    
+                }
+                    var nodes=tb.getElementsByTagName("tr")[0].getElementsByTagName("th");
+                    nodes[0].innerHTML="地区";
+                    nodes[1].innerHTML="商品";                                    
+                }else{
+                if(j==0){
+                 if((i-1)%a==0){
+                        var th=document.createElement("th");
+                        tr.appendChild(th);
+                        th.innerHTML=object[i-1]["product"];                    
+                        th.rowSpan=a;
+                    }                    
+                }else if(j==1){
+                var th=document.createElement("th");
+                tr.appendChild(th);
+                 th.innerHTML=object[i-1]["region"];                 
+                }else{
+                 var td=document.createElement("td");
+                 tr.appendChild(td);
+                 td.innerHTML=object[i-1]["sale"][j-2];    
+                }
+                }    
+
+
+            }
+        }
+    }
+}
+</script>                                               
+</body>
+</html>
