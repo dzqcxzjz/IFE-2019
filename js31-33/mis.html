@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">    
     <title>IFE ECMAScript</title>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts-en.common.min.js"></script>
     <style>
      table tr td{
         padding: 10px;
@@ -17,6 +18,8 @@
     <form action="#">
     <div id="table-wrapper"></div>
     </form>
+     <div id="main" style="width: 600px;height:400px;"></div>
+     <div id="master" style="height:400px;"></div>
 <script>
 var oregion=document.querySelector("#region-radio-wrapper"); 
 var oproduct=document.querySelector("#product-radio-wrapper");
@@ -171,7 +174,35 @@ oregion.onchange=function(event){
         tw.innerHTML="";
        getData(arr1,arr2);
         makeTable(arr);        
-    
+ var regionalsales =[];
+ var a=oregion.getElementsByTagName("input"); 
+ for(var i=1;i<a.length;i++){
+    var b=0;
+    for(var j=0;j<arr.length;j++){
+    for(var prop in arr[j]){
+        console.log(arr[j][prop]);
+        if(arr[j][prop]===a[i].value){
+            b+=arr[j]["sale"].reduce(function(a,b){
+                return a+b;
+            })
+        }
+    }        
+    }
+    regionalsales.push(b);
+ }
+ var myChart = echarts.init(document.getElementById('main'));
+ var option={
+            series: {
+                type: 'pie',
+                data: [
+                    {name: '华北', value: regionalsales[0]},
+                    {name: '华东', value: regionalsales[1]},
+                    {name: '华南', value: regionalsales[2]}
+                ]
+            }
+        };
+    myChart.setOption(option);   
+
 
 }
 oproduct.onchange=function(){
@@ -192,7 +223,91 @@ oproduct.onchange=function(){
     }    
         tw.innerHTML="";
        getData(arr1,arr2);
-        makeTable(arr);        
+        makeTable(arr);
+ var regionalsales =[];
+ var a=oregion.getElementsByTagName("input"); 
+ for(var i=1;i<a.length;i++){
+    var b=0;
+    for(var j=0;j<arr.length;j++){
+    for(var prop in arr[j]){
+        if(arr[j][prop]===a[i].value){
+            b+=arr[j]["sale"].reduce(function(a,b){
+                return a+b;
+            })
+        }
+    }        
+    }
+    regionalsales.push(b);
+ }
+ var myChart = echarts.init(document.getElementById('main'));
+ var option={
+            series: {
+                type: 'pie',
+                data: [
+                    {name: '华北', value: regionalsales[0]},
+                    {name: '华东', value: regionalsales[1]},
+                    {name: '华南', value: regionalsales[2]}
+                ]
+            }
+        };
+    myChart.setOption(option); 
+    
+    var masterChart=echarts.init(document.getElementById("master"));
+
+myChart.on('click', function (params) {   
+    var a=[];
+    var masterArr=[['product', '一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']];
+    for(var i=0;i<arr.length;i++){
+        for(var prop in arr[i]){
+            if(arr[i][prop]==params.name){
+            a.push(arr[i]);
+            break;                
+            };
+
+        }
+    }
+    for(var i=0;i<a.length;i++){
+            masterArr[i+1]=[];
+            masterArr[i+1].push(a[i].product);
+            for(var j=0;j<a[i]["sale"].length;j++){
+                masterArr[i+1].push(a[i]["sale"][j]);
+            }
+    }
+    console.log(masterArr);
+    console.log(a);
+
+
+    var masterOption={
+    legend: {},
+    tooltip: {},
+    dataset: {
+        source:masterArr 
+    },
+    title: {
+        left: '15%',
+        text:params.name+'地区销量图',
+    },
+    xAxis: {type: 'category'},
+    yAxis: {},
+    // Declare several bar series, each will be mapped
+    // to a column of dataset.source by default.
+    series: [
+        {type: 'bar'},
+        {type: 'bar'},
+        {type: 'bar'},
+        {type: 'bar'},
+        {type: 'bar'},
+        {type: 'bar'},
+        {type: 'bar'},
+        {type: 'bar'},
+        {type: 'bar'},
+        {type: 'bar'},
+        {type: 'bar'},
+        {type: 'bar'}        
+    ]
+};    
+    masterChart.setOption(masterOption);
+});                           
 }
   function getData(a,b){
     var flag;
@@ -328,6 +443,10 @@ function makeTable(object){
         }
     }
 }
+
+
+
+
 </script>                                               
 </body>
 </html>
