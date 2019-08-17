@@ -18,7 +18,7 @@
     <form action="#">
     <div id="table-wrapper"></div>
     </form>
-     <div id="main" style="width: 600px;height:400px;"></div>
+     <div id="main" style="width: 30%;height:400px;"></div>
      <div id="master" style="height:400px;"></div>
 <script>
 var oregion=document.querySelector("#region-radio-wrapper"); 
@@ -274,17 +274,18 @@ myChart.on('click', function (params) {
             }
     }
     console.log(masterArr);
-    console.log(a);
-
-
     var masterOption={
-    legend: {},
+    legend: {
+        show:true,
+        top:"6%",
+        bottom:"6%"
+    },
     tooltip: {},
     dataset: {
         source:masterArr 
     },
     title: {
-        text:params.name+'地区销量图',
+        text:params.name+'地区销量图'
     },
     xAxis: {type: 'category'},
     yAxis: {},
